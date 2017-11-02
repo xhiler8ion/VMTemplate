@@ -1,0 +1,80 @@
+{
+ "description": "Creates VM Template on bwCloud containing docker, ansible, packer and singularity. Responsibility for keeping any public image up-to-date rests with eScience and the image can be deleted if this isn't done. See ViCE Ticket 17438 for more information."
+ ,"builders": [
+    {
+      "type": "openstack"
+      ,"ssh_username": "ubuntu"
+      ,"image_name": "Ubuntu16.04-Provisionbase-{{timestamp}}"
+      ,"source_image": "43687a4a-deb2-402b-a3ba-cd9054b77598"
+      ,"flavor": "m1.small"
+      ,"networks": "d017ffbd-bffb-4c66-a218-ff6dbd76d11d"
+      ,"metadata": {
+        "description": "Creates VM Template on bwCloud containing docker, ansible, packer and singularity. Responsibility for keeping any public image up-to-date rests with eScience and the image can be deleted if this isn't done. See ViCE Ticket 17438 for more information."
+      }
+    } 
+  ]
+  ,"post-processors": []
+  ,"provisioners": [
+    {
+      "type": "shell"
+      ,"inline": [
+        "sudo apt remove -y docker docker.io docker-engine || true"
+        ,"sudo apt-get update"
+        ,"sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common"
+        ,"curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -"
+        ,"sudo apt-key fingerprint 0EBFCD88"
+        ,"sudo add-apt-repository \"deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\"" 
+        ,"sudo apt-get update"
+        ,"sudo apt-get install -y docker-ce"
+        ,"sudo docker run hello-world"
+        ,"sudo groupadd -f docker"
+        ,"sudo usermod -aG docker $USER"
+        ,"groups $USER"
+      ]
+    } 
+    ,{
+      "type": "shell"
+      ,"inline": [
+        "sudo apt-get update"
+        ,"sudo apt-get install -y software-properties-common"
+        ,"sudo apt-add-repository ppa:ansible/ansible"
+        ,"sudo apt-get update"
+        ,"sudo apt-get install -y ansible"
+        ,"ansible -h"
+      ]
+    }
+    ,{
+      "type": "shell"
+      ,"inline": [
+        "sudo apt-get update"
+        ,"sudo apt-get install -y unzip"
+        ,"mkdir ~/packer"
+        ,"cd ~/packer"	
+        ,"wget https://releases.hashicorp.com/packer/1.1.1/packer_1.1.1_linux_amd64.zip"
+        ,"wget https://releases.hashicorp.com/packer/1.1.1/packer_1.1.1_SHA256SUMS"
+        ,"sha256sum --check --ignore-missing --status packer_1.1.1_SHA256SUMS"
+        ,"/usr/bin/unzip packer_1.1.1_linux_amd64.zip"
+      ]
+    }
+    ,{
+      "type": "shell"
+      ,"inline": [
+        "sudo apt-get update"
+        ,"sudo apt-get install -y gcc"
+        ,"sudo apt-get install -y python"
+        ,"sudo apt-get install -y make"
+        ,"mkdir ~/singularity"
+        ,"cd ~/singularity"
+        ,"VERSION=2.4"
+        ,"wget https://github.com/singularityware/singularity/releases/download/$VERSION/singularity-$VERSION.tar.gz"
+        ,"tar xvf singularity-$VERSION.tar.gz"
+        ,"cd singularity-$VERSION"
+        ,"./configure --prefix=/usr/local"
+        ,"make"
+        ,"sudo make install"
+        ,"singularity"
+      ]
+    }
+  ]
+}
+
