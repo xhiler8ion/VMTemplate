@@ -6,6 +6,6 @@ Instance size Small
 Docker (latest - 17.09.0-ce)
 Ansible (latest - 2.3.2.0)
 Packer (v. 1.1.1) 
-Singularity (v. 2.3.1)
+Singularity (v. 2.4)
 
 To use, first source your OpenStack RC File and then run packer build vmtemplate.json
