@@ -30,6 +30,7 @@
         ,"sudo groupadd -f docker"
         ,"sudo usermod -aG docker $USER"
         ,"groups $USER"
+        ,"sudo apt install -y docker-compose"
       ]
     }
     ,{
