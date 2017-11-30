@@ -7,7 +7,7 @@
       ,"image_name": "Ubuntu16.04-Provisionbase-{{timestamp}}"
       ,"source_image": "43687a4a-deb2-402b-a3ba-cd9054b77598"
       ,"flavor": "m1.small"
-      ,"networks": "d017ffbd-bffb-4c66-a218-ff6dbd76d11d"
+      ,"networks": "913b20eb-123f-4e23-a740-ef2f5c1d28a4"
       ,"metadata": {
         "description": "Creates VM Template on bwCloud containing docker, ansible, packer and singularity. Responsibility for keeping any public image up-to-date rests with eScience and the image can be deleted if this isn't done. See ViCE Ticket 17438 for more information."
       }
