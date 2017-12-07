@@ -57,6 +57,10 @@
         ,"wget https://releases.hashicorp.com/packer/1.1.1/packer_1.1.1_SHA256SUMS"
         ,"sha256sum --check --ignore-missing --status packer_1.1.1_SHA256SUMS"
         ,"/usr/bin/unzip packer_1.1.1_linux_amd64.zip"
+        ,"sudo mv packer /usr/local/bin"
+        ,"cd .."
+        ,"rm -rf packer"
+        ,"packer --version"
       ]
     }
     ,{
