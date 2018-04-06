@@ -7,7 +7,7 @@
       ,"image_name": "CentOSServer7-ApacheShibboleth_1"
       ,"source_image": "0bd53c04-118c-43c7-bdff-c417eea0556a"
       ,"flavor": "m1.small"
-      ,"networks": "d017ffbd-bffb-4c66-a218-ff6dbd76d11d"
+      ,"networks": "913b20eb-123f-4e23-a740-ef2f5c1d28a4"
       ,"ssh_pty" : "true"
       ,"metadata": {
         "description": "Creates VM Template on bwCloud with Apache and Shibboleth."
