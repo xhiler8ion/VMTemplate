@@ -1,0 +1,51 @@
+{
+ "description": "Creates VM Template on bwCloud with Apache and Shibboleth."
+ ,"builders": [
+    {
+      "type": "openstack"
+      ,"ssh_username": "centos"
+      ,"image_name": "CentOSServer7-ApacheShibboleth_1"
+      ,"source_image": "0bd53c04-118c-43c7-bdff-c417eea0556a"
+      ,"flavor": "m1.small"
+      ,"networks": "d017ffbd-bffb-4c66-a218-ff6dbd76d11d"
+      ,"ssh_pty" : "true"
+      ,"metadata": {
+        "description": "Creates VM Template on bwCloud with Apache and Shibboleth."
+      }
+    }
+  ]
+  ,"post-processors": []
+  ,"provisioners": [
+    {
+      "type": "shell"
+      ,"inline": [
+        "sudo yum clean all"
+        ,"sudo yum -y update"
+        ,"sudo yum -y install httpd"
+        ,"sudo systemctl enable httpd"
+      ]
+    }
+    ,{
+      "type": "shell"
+      ,"inline": [
+        "printf '[shibboleth]\nname=Shibboleth (CentOS_7)\n# Please report any problems to https://issues.shibboleth.net\ntype=rpm-md\nmirrorlist=https://shibboleth.net/cgi-bin/mirrorlist.cgi/CentOS_7\ngpgcheck=1\ngpgkey=https://downloadcontent.opensuse.org/repositories/security:/shibboleth/CentOS_7/repodata/repomd.xml.key\nenabled=1\n' >shib.repo" 
+        ,"sudo cp shib.repo /etc/yum.repos.d/shib.repo"
+      ]
+    }
+    ,{
+      "type": "shell"
+      ,"inline": [
+        "sudo yum -y install shibboleth.x86_64"
+        ,"sudo chkconfig shibd on"
+        ,"sudo yum -y install mod_ssl"
+      ]
+    }
+   ,{
+      "type": "shell"
+      ,"inline": [
+        "sudo yum -y install wget"
+        ,"sudo /etc/shibboleth/keygen.sh -f -u shibd -h shibb.yourdomain.com -y 3 -e https://shibb.yourdomain.com/shibboleth -o /etc/shibboleth"
+      ]
+    }
+  ]
+}
